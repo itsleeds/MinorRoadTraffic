@@ -59,6 +59,7 @@ road_centrality = function(lines, threshold = 5){
       dodgr::clear_dodgr_cache()
       graph_sub <- dodgr::dodgr_to_sf(graph_sub)
       graph_sub$std_centrality <- graph_sub$centrality / zone_sub$npoints
+      graph_sub$edge_id = as.character(graph_sub$edge_id) # Prevent bind_rows error
       graphs[[i]] <- graph_sub
     }
   }

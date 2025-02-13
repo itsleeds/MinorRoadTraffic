@@ -1,6 +1,6 @@
 ---
 title: "Oxfordshire Demo"
-output: rmarkdown::html_vignette
+output: github_document
 vignette: >
   %\VignetteIndexEntry{IOW}
   %\VignetteEngine{knitr::rmarkdown}
@@ -16,6 +16,11 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(MinorRoadTraffic)
+library(GWmodel)
+library(tmap)
+library(sf)
+library(dplyr)
+library(osmextract)
 ```
 
 Download raw data
@@ -85,7 +90,7 @@ summary(unique(aadt$road_name[aadt$road_type == "Major"]) %in% unique(network$re
 ```
 In  this case there are no missing IDs, sometimes a manual fix to the data is needed.
 
-Now assing the major road traffic counts to each part of the major road network.
+Now assign the major road traffic counts to each part of the major road network.
 
 ```{r assign_aadt}
 aadt_assign = assign_aadt_major(network, junctions, aadt, bounds)
@@ -95,7 +100,7 @@ junctions_major_minor = aadt_assign$junctions_major_minor
 Lets make a plot of our progress. Here we can see the minor roads in grey and the major roads coloured by their AADT. Junctions between major and minor roads are highlighted in blue. These junctions are important as they are the places traffic can leave the major road network and join the minor road network.
 
 ```{r plot1}
-library(tmap)
+
 tm_shape(network) +
   tm_lines(lwd = 2, col = "traffic_flow") +
   tm_shape(junctions_major_minor) +
@@ -108,7 +113,7 @@ Now lets analyse the minor road network
 network = minor_roads_distance(network, junctions_major_minor)
 ```
 
-Calculate the centrality of minor roads. Centrality is a measure of the importance of a road, with higher centrality suggestion it is a road that connects different places together. Note calculating centrality on large networks is time-consuming, so this function breaks the network into zones based on the major road network. 
+Calculate the centrality of minor roads. Centrality is a measure of the importance of a road, with higher centrality suggesting it is a road that connects different places together. Note calculating centrality on large networks is time-consuming, so this function breaks the network into zones based on the major road network. Note that a current limitation is dealing with minor roads that have bridges over major roads. As these link two zones together.
 
 ```{r minor_centrality}
 network = road_centrality(network)
@@ -180,14 +185,14 @@ We get an R-squared of 0.278 which is not great.
 
 ```{r lm_plot}
 plot(network$traffic_flow_minor[!is.na(network$traffic_flow_minor)], predict(m1),
-     xlab = "Obsereved AADT",
+     xlab = "Observed AADT",
      ylab = "Predicted AADT")
 abline(0,1)
 ```
 Now try a Geographically Weighted Regression
 
 ```{r, GWR model}
-library(GWmodel)
+
 
 #GWR uses points not lines
 cents = st_centroid(network)
@@ -226,18 +231,18 @@ gwpr4
 
 ```
 
-GWR improves the R-squared to 0.48 again not great, but much better.
+GWR improves the R-squared to 0.36 again not great, but much better.
 
 ```{r, gwr_plot}
 plot(cents_test$traffic_flow_minor,gwpr4$glms$fitted.values,
-     xlab = "Obsereved AADT",
+     xlab = "Observed AADT",
      ylab = "Predicted AADT")
 abline(0,1)
 ```
 
 Now predict traffic for all roads
 
-```{r, GWR model}
+```{r, GWR model2}
 cents_predict = cents[is.na(cents$traffic_flow_minor),]
 #cents_predict = cents_predict[is.na(cents_predict$traffic_flow),]
 cents_test = cents[!is.na(cents$traffic_flow_minor),]

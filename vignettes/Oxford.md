@@ -141,7 +141,7 @@ tm_shape(network) +
   tm_dots(col = "blue", size = 0.08)
 ```
 
-![](C:/Users/earmmor/AppData/Local/Temp/Rtmpc3M1O3/preview-a2a47e9f1fe8.dir/Oxford_files/figure-gfm/plot1-1.png)<!-- -->
+![](Oxford_files/figure-gfm/plot1-1.png)<!-- -->
 Now lets analyse the minor road network
 
 ``` r
@@ -208,7 +208,7 @@ tm_shape(network) +
   tm_lines(lwd = 2, col = "std_centrality")
 ```
 
-![](C:/Users/earmmor/AppData/Local/Temp/Rtmpc3M1O3/preview-a2a47e9f1fe8.dir/Oxford_files/figure-gfm/plot2-1.png)<!-- -->
+![](Oxford_files/figure-gfm/plot2-1.png)<!-- -->
 
 Calculate road density. We will use the `use_centroids = TRUE` which is
 faster but slight less accurate.
@@ -227,7 +227,7 @@ tm_shape(network) +
   tm_lines(lwd = 2, col = "road_density")
 ```
 
-![](C:/Users/earmmor/AppData/Local/Temp/Rtmpc3M1O3/preview-a2a47e9f1fe8.dir/Oxford_files/figure-gfm/plot3-1.png)<!-- -->
+![](Oxford_files/figure-gfm/plot3-1.png)<!-- -->
 
 The road_density function also add the zone ID to each road. From the
 first column in `zones`. We can use the ID to join on other zonal data
@@ -242,7 +242,7 @@ tm_shape(network) +
 #> Legend labels were too wide. The labels have been resized to 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63, 0.63. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.
 ```
 
-![](C:/Users/earmmor/AppData/Local/Temp/Rtmpc3M1O3/preview-a2a47e9f1fe8.dir/Oxford_files/figure-gfm/plot4-1.png)<!-- -->
+![](Oxford_files/figure-gfm/plot4-1.png)<!-- -->
 
 We can join on other variables from the zones data
 
@@ -257,7 +257,7 @@ tm_shape(network) +
   tm_lines(lwd = 2, col = "cars_percap_2018")
 ```
 
-![](C:/Users/earmmor/AppData/Local/Temp/Rtmpc3M1O3/preview-a2a47e9f1fe8.dir/Oxford_files/figure-gfm/plot5-1.png)<!-- -->
+![](Oxford_files/figure-gfm/plot5-1.png)<!-- -->
 
 Now we can assign our minor road traffic data and attempt to model the
 missing data
@@ -316,7 +316,7 @@ plot(network$traffic_flow_minor[!is.na(network$traffic_flow_minor)], predict(m1)
 abline(0,1)
 ```
 
-![](C:/Users/earmmor/AppData/Local/Temp/Rtmpc3M1O3/preview-a2a47e9f1fe8.dir/Oxford_files/figure-gfm/lm_plot-1.png)<!-- -->
+![](Oxford_files/figure-gfm/lm_plot-1.png)<!-- -->
 Now try a Geographically Weighted Regression
 
 ``` r
@@ -544,7 +544,7 @@ plot(cents_test$traffic_flow_minor,gwpr4$glms$fitted.values,
 abline(0,1)
 ```
 
-![](C:/Users/earmmor/AppData/Local/Temp/Rtmpc3M1O3/preview-a2a47e9f1fe8.dir/Oxford_files/figure-gfm/gwr_plot-1.png)<!-- -->
+![](Oxford_files/figure-gfm/gwr_plot-1.png)<!-- -->
 
 Now predict traffic for all roads
 
@@ -580,4 +580,4 @@ tm_shape(network_predit) +
 #> Variable(s) "prediction" contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.
 ```
 
-![](C:/Users/earmmor/AppData/Local/Temp/Rtmpc3M1O3/preview-a2a47e9f1fe8.dir/Oxford_files/figure-gfm/plot8-1.png)<!-- -->
+![](Oxford_files/figure-gfm/plot8-1.png)<!-- -->
